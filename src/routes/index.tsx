@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import {
   Github, Linkedin, Mail, Twitter, ArrowRight, Sparkles,
   Code2, Palette, Rocket, ExternalLink, Menu, X, Send,
-  MapPin, Calendar, Coffee, Heart, Star
+  MapPin, Calendar, Coffee, Heart, Star, Download
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
 
@@ -145,6 +145,15 @@ function Portfolio() {
               </a>
               <a href="#contact" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full glass font-semibold hover:bg-secondary transition-all hover:-translate-y-0.5">
                 Hubungi Saya
+              </a>
+              <a
+                href="/resume.pdf"
+                download="Ayu-Pratama-Resume.pdf"
+                onClick={() => toast.success("CV sedang diunduh…")}
+                className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/70 border border-[oklch(0.72_0.14_10)]/40 text-[oklch(0.4_0.12_10)] font-semibold shadow-pink hover:bg-[oklch(0.9_0.05_15)] transition-all hover:-translate-y-0.5"
+              >
+                <Download className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
+                Unduh CV
               </a>
             </motion.div>
 
