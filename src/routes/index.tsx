@@ -2,56 +2,68 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { useRef, useState, useEffect } from "react";
 import {
-  Github, Instagram, Mail, ArrowRight, Sparkles,
+  Github, Linkedin, Mail, Twitter, ArrowRight, Sparkles,
   Code2, Palette, Rocket, ExternalLink, Menu, X, Send,
-  MapPin, Calendar, Coffee, Heart, Star, Download, Languages,
-  GraduationCap,
+  MapPin, Calendar, Coffee, Heart, Star, Download
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
-import { I18nProvider, useI18n, type Lang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
-  component: PortfolioRoot,
+  component: Portfolio,
 });
 
-function PortfolioRoot() {
-  return (
-    <I18nProvider>
-      <Portfolio />
-    </I18nProvider>
-  );
-}
-
-const NAV_KEYS = [
-  { key: "nav.home", href: "#home" },
-  { key: "nav.about", href: "#about" },
-  { key: "nav.skills", href: "#skills" },
-  { key: "nav.projects", href: "#projects" },
-  { key: "nav.contact", href: "#contact" },
+const NAV = [
+  { label: "Beranda", href: "#home" },
+  { label: "Tentang", href: "#about" },
+  { label: "Skill", href: "#skills" },
+  { label: "Proyek", href: "#projects" },
+  { label: "Kontak", href: "#contact" },
 ];
 
 const SKILLS = [
-  { name: "HTML & CSS", level: 90, icon: Code2 },
-  { name: "JavaScript", level: 78, icon: Code2 },
-  { name: "React & Tailwind", level: 75, icon: Sparkles },
-  { name: "Figma / UI Design", level: 85, icon: Palette },
-  { name: "Laravel / PHP", level: 70, icon: Rocket },
-  { name: "Git & GitHub", level: 80, icon: Code2 },
+  { name: "React & Next.js", level: 95, icon: Code2 },
+  { name: "TypeScript", level: 90, icon: Code2 },
+  { name: "UI / UX Design", level: 88, icon: Palette },
+  { name: "Node.js & API", level: 85, icon: Rocket },
+  { name: "Framer Motion", level: 92, icon: Sparkles },
+  { name: "Tailwind CSS", level: 96, icon: Palette },
 ];
 
 const PROJECTS = [
-  { keyT: "p1.title", keyD: "p1.desc", tags: ["HTML", "CSS", "JS"],
-    color: "from-[oklch(0.78_0.11_140)] to-[oklch(0.9_0.05_15)]" },
-  { keyT: "p2.title", keyD: "p2.desc", tags: ["Laravel", "MySQL", "Bootstrap"],
-    color: "from-[oklch(0.9_0.05_15)] to-[oklch(0.78_0.11_140)]" },
-  { keyT: "p3.title", keyD: "p3.desc", tags: ["React", "Tailwind"],
-    color: "from-[oklch(0.72_0.14_10)] to-[oklch(0.58_0.13_145)]" },
-  { keyT: "p4.title", keyD: "p4.desc", tags: ["React Native", "Figma"],
-    color: "from-[oklch(0.58_0.13_145)] to-[oklch(0.72_0.14_10)]" },
+  {
+    title: "Matcha Commerce",
+    desc: "Platform e-commerce khusus produk matcha premium dengan pengalaman belanja imersif.",
+    tags: ["Next.js", "Stripe", "Tailwind"],
+    color: "from-[oklch(0.78_0.11_140)] to-[oklch(0.9_0.05_15)]",
+  },
+  {
+    title: "Bloom Dashboard",
+    desc: "Dashboard analitik SaaS dengan visualisasi data real-time dan tema pastel.",
+    tags: ["React", "D3.js", "Supabase"],
+    color: "from-[oklch(0.9_0.05_15)] to-[oklch(0.78_0.11_140)]",
+  },
+  {
+    title: "Pixel Portfolio",
+    desc: "Portfolio 3D interaktif untuk seorang illustrator dengan animasi scroll yang halus.",
+    tags: ["Three.js", "GSAP", "Vite"],
+    color: "from-[oklch(0.72_0.14_10)] to-[oklch(0.58_0.13_145)]",
+  },
+  {
+    title: "Zen Journal",
+    desc: "Aplikasi journaling mindfulness dengan mood tracker dan reminder harian.",
+    tags: ["React Native", "Expo", "Firebase"],
+    color: "from-[oklch(0.58_0.13_145)] to-[oklch(0.72_0.14_10)]",
+  },
+];
+
+const STATS = [
+  { value: "50+", label: "Proyek Selesai" },
+  { value: "5+", label: "Tahun Pengalaman" },
+  { value: "30+", label: "Klien Bahagia" },
+  { value: "∞", label: "Cangkir Kopi" },
 ];
 
 function Portfolio() {
-  const { t } = useI18n();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -72,13 +84,6 @@ function Portfolio() {
     window.addEventListener("mousemove", handler);
     return () => window.removeEventListener("mousemove", handler);
   }, []);
-
-  const STATS = [
-    { value: "12+", label: t("stats.projects") },
-    { value: "3", label: t("stats.years") },
-    { value: "5+", label: t("stats.certs") },
-    { value: "∞", label: t("stats.coffee") },
-  ];
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
@@ -110,24 +115,25 @@ function Portfolio() {
               initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass shadow-soft mb-6"
             >
-              <GraduationCap className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium">{t("hero.badge")}</span>
+              <Sparkles className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium">Tersedia untuk proyek baru</span>
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
               className="text-5xl md:text-7xl font-bold leading-[1.05] mb-6"
             >
-              {t("hero.hello")} <br />
-              <span className="text-gradient">{t("hero.name")}</span> <br />
-              <em className="font-normal italic text-3xl md:text-4xl text-muted-foreground">{t("hero.role")}</em>
+              Halo, saya <br />
+              <span className="text-gradient">Creative Dev</span> <br />
+              yang suka <em className="font-normal italic">matcha</em>.
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
               className="text-lg text-muted-foreground max-w-lg mb-8"
             >
-              {t("hero.desc")}
+              Saya merancang & membangun pengalaman digital yang cantik, cepat, dan bermakna —
+              memadukan estetika lembut dengan kode yang rapi.
             </motion.p>
 
             <motion.div
@@ -135,19 +141,19 @@ function Portfolio() {
               className="flex flex-wrap gap-4"
             >
               <a href="#projects" className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold shadow-soft hover:shadow-pink transition-all hover:-translate-y-0.5">
-                {t("hero.cta.projects")} <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                Lihat Karya <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </a>
               <a href="#contact" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full glass font-semibold hover:bg-secondary transition-all hover:-translate-y-0.5">
-                {t("hero.cta.contact")}
+                Hubungi Saya
               </a>
               <a
                 href="/resume.pdf"
-                download="Zahida-Asha-Falia-CV.pdf"
-                onClick={() => toast.success(t("cv.toast"))}
+                download="Ayu-Pratama-Resume.pdf"
+                onClick={() => toast.success("CV sedang diunduh…")}
                 className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/70 border border-[oklch(0.72_0.14_10)]/40 text-[oklch(0.4_0.12_10)] font-semibold shadow-pink hover:bg-[oklch(0.9_0.05_15)] transition-all hover:-translate-y-0.5"
               >
                 <Download className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
-                {t("hero.cta.cv")}
+                Unduh CV
               </a>
             </motion.div>
 
@@ -155,7 +161,7 @@ function Portfolio() {
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
               className="flex items-center gap-6 mt-10 text-muted-foreground"
             >
-              {[Github, Instagram, Mail].map((Icon, i) => (
+              {[Github, Linkedin, Twitter, Mail].map((Icon, i) => (
                 <motion.a key={i} href="#" whileHover={{ y: -3, color: "var(--matcha-deep)" }} className="transition-colors">
                   <Icon className="w-5 h-5" />
                 </motion.a>
@@ -167,9 +173,13 @@ function Portfolio() {
           <div className="perspective-1000 flex items-center justify-center h-[500px]">
             <motion.div
               className="relative preserve-3d"
-              style={mounted ? { rotateY: mouse.x * 15, rotateX: -mouse.y * 15 } : undefined}
+              style={mounted ? {
+                rotateY: mouse.x * 15,
+                rotateX: -mouse.y * 15,
+              } : undefined}
               transition={{ type: "spring", stiffness: 50, damping: 20 }}
             >
+              {/* Layered 3D cards */}
               <motion.div
                 className="absolute -inset-8 rounded-[3rem] bg-gradient-to-br from-[oklch(0.78_0.11_140)] to-[oklch(0.9_0.05_15)] opacity-70 blur-2xl animate-blob"
                 style={{ transform: "translateZ(-100px)" }}
@@ -183,13 +193,13 @@ function Portfolio() {
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                    className="w-24 h-24 rounded-full bg-gradient-to-br from-[oklch(0.58_0.13_145)] to-[oklch(0.72_0.14_10)] flex items-center justify-center shadow-soft text-white font-display font-bold text-4xl"
+                    className="w-24 h-24 rounded-full bg-gradient-to-br from-[oklch(0.58_0.13_145)] to-[oklch(0.72_0.14_10)] flex items-center justify-center shadow-soft"
                   >
-                    Z
+                    <Coffee className="w-10 h-10 text-white" />
                   </motion.div>
                   <div className="text-center">
-                    <div className="font-display text-2xl font-bold text-gradient">{t("hero.card.title")}</div>
-                    <div className="text-xs text-muted-foreground mt-1">{t("hero.card.sub")}</div>
+                    <div className="font-display text-2xl font-bold text-gradient">Matcha + Pink</div>
+                    <div className="text-xs text-muted-foreground mt-1">Design & Code Studio</div>
                   </div>
                   <div className="grid grid-cols-3 gap-2 w-full mt-2">
                     {[Code2, Palette, Rocket].map((Icon, i) => (
@@ -201,6 +211,7 @@ function Portfolio() {
                 </div>
               </motion.div>
 
+              {/* Floating orbs */}
               <motion.div
                 className="absolute -top-8 -right-8 w-20 h-20 rounded-2xl bg-gradient-to-br from-[oklch(0.72_0.14_10)] to-[oklch(0.9_0.05_15)] shadow-pink"
                 style={{ transform: "translateZ(120px)" }}
@@ -262,15 +273,15 @@ function Portfolio() {
               />
               <div className="absolute inset-6 rounded-[2.5rem] glass flex items-center justify-center flex-col gap-3">
                 <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[oklch(0.72_0.14_10)] to-[oklch(0.58_0.13_145)] flex items-center justify-center text-white text-5xl font-display font-bold shadow-pink">
-                  Z
+                  A
                 </div>
                 <div className="text-center">
-                  <div className="font-display text-2xl font-bold">Zahida Asha Falia</div>
-                  <div className="text-sm text-muted-foreground">{t("about.class")} — {t("about.school")}</div>
+                  <div className="font-display text-2xl font-bold">Ayu Pratama</div>
+                  <div className="text-sm text-muted-foreground">Creative Developer</div>
                 </div>
                 <div className="flex items-center gap-4 text-xs text-muted-foreground mt-2">
-                  <span className="inline-flex items-center gap-1"><MapPin className="w-3 h-3" /> Bangsri, Jepara</span>
-                  <span className="inline-flex items-center gap-1"><Calendar className="w-3 h-3" /> 2023 — {new Date().getFullYear()}</span>
+                  <span className="inline-flex items-center gap-1"><MapPin className="w-3 h-3" /> Jakarta</span>
+                  <span className="inline-flex items-center gap-1"><Calendar className="w-3 h-3" /> 2019 — kini</span>
                 </div>
               </div>
             </div>
@@ -280,16 +291,23 @@ function Portfolio() {
             initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.7 }}
           >
-            <div className="inline-flex px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold mb-4">{t("about.tag")}</div>
+            <div className="inline-flex px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold mb-4">TENTANG SAYA</div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {t("about.title.1")} <span className="text-gradient">{t("about.title.2")}</span>
+              Merancang produk yang <span className="text-gradient">terasa hangat</span> & bekerja mulus.
             </h2>
-            <p className="text-muted-foreground text-lg mb-4">{t("about.p1")}</p>
-            <p className="text-muted-foreground text-lg mb-8">{t("about.p2")}</p>
+            <p className="text-muted-foreground text-lg mb-4">
+              Saya seorang creative developer dengan passion di persimpangan desain dan teknologi.
+              Selama 5+ tahun, saya membantu startup dan brand membangun produk digital yang tidak hanya
+              berfungsi baik — tapi juga meninggalkan kesan.
+            </p>
+            <p className="text-muted-foreground text-lg mb-8">
+              Ketika tidak coding, kamu bisa menemukan saya menyeruput matcha latte, membaca buku desain,
+              atau menjelajahi kafe-kafe baru di kota.
+            </p>
             <div className="grid grid-cols-2 gap-4">
               {[
-                { icon: GraduationCap, label: t("about.item1.label"), value: t("about.item1.value") },
-                { icon: Palette, label: t("about.item2.label"), value: t("about.item2.value") },
+                { icon: Coffee, label: "Passion", value: "Matcha & Kode" },
+                { icon: Palette, label: "Fokus", value: "Design Systems" },
               ].map((item) => (
                 <div key={item.label} className="glass rounded-2xl p-4 shadow-soft">
                   <item.icon className="w-6 h-6 text-primary mb-2" />
@@ -309,8 +327,8 @@ function Portfolio() {
             initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} className="text-center mb-16"
           >
-            <div className="inline-flex px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold mb-4">{t("skills.tag")}</div>
-            <h2 className="text-4xl md:text-5xl font-bold">{t("skills.title.1")} <span className="text-gradient">{t("skills.title.2")}</span></h2>
+            <div className="inline-flex px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold mb-4">KEAHLIAN</div>
+            <h2 className="text-4xl md:text-5xl font-bold">Tools yang saya <span className="text-gradient">kuasai</span></h2>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-5">
@@ -351,15 +369,15 @@ function Portfolio() {
             initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} className="text-center mb-16"
           >
-            <div className="inline-flex px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold mb-4">{t("projects.tag")}</div>
-            <h2 className="text-4xl md:text-5xl font-bold">{t("projects.title.1")} <span className="text-gradient">{t("projects.title.2")}</span></h2>
-            <p className="text-muted-foreground mt-4 max-w-xl mx-auto">{t("projects.desc")}</p>
+            <div className="inline-flex px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold mb-4">PROYEK</div>
+            <h2 className="text-4xl md:text-5xl font-bold">Karya <span className="text-gradient">terpilih</span></h2>
+            <p className="text-muted-foreground mt-4 max-w-xl mx-auto">Sebagian proyek yang saya kerjakan dari konsep sampai peluncuran.</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-6 perspective-1000">
             {PROJECTS.map((p, i) => (
               <motion.article
-                key={p.keyT}
+                key={p.title}
                 initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }}
                 whileHover={{ y: -8, rotateX: 4, rotateY: -4 }}
@@ -376,11 +394,11 @@ function Portfolio() {
                   </motion.div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-2xl font-bold mb-2 group-hover:text-gradient transition-all">{t(p.keyT)}</h3>
-                  <p className="text-muted-foreground mb-4">{t(p.keyD)}</p>
+                  <h3 className="text-2xl font-bold mb-2 group-hover:text-gradient transition-all">{p.title}</h3>
+                  <p className="text-muted-foreground mb-4">{p.desc}</p>
                   <div className="flex flex-wrap gap-2">
-                    {p.tags.map((tag) => (
-                      <span key={tag} className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-medium">{tag}</span>
+                    {p.tags.map((t) => (
+                      <span key={t} className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-medium">{t}</span>
                     ))}
                   </div>
                 </div>
@@ -397,9 +415,9 @@ function Portfolio() {
             initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} className="text-center mb-12"
           >
-            <div className="inline-flex px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold mb-4">{t("contact.tag")}</div>
-            <h2 className="text-4xl md:text-5xl font-bold">{t("contact.title.1")} <span className="text-gradient">{t("contact.title.2")}</span></h2>
-            <p className="text-muted-foreground mt-4">{t("contact.desc")}</p>
+            <div className="inline-flex px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold mb-4">KONTAK</div>
+            <h2 className="text-4xl md:text-5xl font-bold">Ayo <span className="text-gradient">bekerja sama</span></h2>
+            <p className="text-muted-foreground mt-4">Punya ide atau proyek? Ceritakan pada saya.</p>
           </motion.div>
 
           <ContactForm />
@@ -411,35 +429,7 @@ function Portfolio() {
   );
 }
 
-function LangSwitcher() {
-  const { lang, setLang } = useI18n();
-  const langs: { code: Lang; label: string }[] = [
-    { code: "id", label: "ID" },
-    { code: "en", label: "EN" },
-  ];
-  return (
-    <div className="inline-flex items-center gap-1 p-1 rounded-full glass shadow-soft" role="group" aria-label="Language switcher">
-      <Languages className="w-4 h-4 ml-2 text-primary" />
-      {langs.map((l) => (
-        <button
-          key={l.code}
-          onClick={() => setLang(l.code)}
-          aria-pressed={lang === l.code}
-          className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
-            lang === l.code
-              ? "bg-primary text-primary-foreground shadow-pink"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          {l.label}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 function Navbar({ menuOpen, setMenuOpen }: { menuOpen: boolean; setMenuOpen: (v: boolean) => void }) {
-  const { t } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 20);
@@ -456,26 +446,23 @@ function Navbar({ menuOpen, setMenuOpen }: { menuOpen: boolean; setMenuOpen: (v:
       <div className="max-w-7xl mx-auto px-6">
         <div className={`flex items-center justify-between rounded-full px-5 py-3 transition-all ${scrolled ? "glass shadow-soft" : ""}`}>
           <a href="#home" className="flex items-center gap-2 font-display font-bold text-lg">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[oklch(0.58_0.13_145)] to-[oklch(0.72_0.14_10)] flex items-center justify-center text-white">
-              Z
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[oklch(0.58_0.13_145)] to-[oklch(0.72_0.14_10)] flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-white" />
             </div>
-            <span className="text-gradient">Zahida.</span>
+            <span className="text-gradient">Ayu.</span>
           </a>
 
           <nav className="hidden md:flex items-center gap-1">
-            {NAV_KEYS.map((item) => (
+            {NAV.map((item) => (
               <a key={item.href} href={item.href} className="px-4 py-2 rounded-full text-sm font-medium hover:bg-secondary transition-colors">
-                {t(item.key)}
+                {item.label}
               </a>
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-3">
-            <LangSwitcher />
-            <a href="#contact" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:shadow-pink transition-all">
-              {t("nav.hire")}
-            </a>
-          </div>
+          <a href="#contact" className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:shadow-pink transition-all">
+            Hire Me
+          </a>
 
           <button className="md:hidden p-2" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
             {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -488,16 +475,15 @@ function Navbar({ menuOpen, setMenuOpen }: { menuOpen: boolean; setMenuOpen: (v:
               initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
               className="md:hidden mt-3 p-4 glass rounded-3xl shadow-soft flex flex-col gap-1"
             >
-              {NAV_KEYS.map((item) => (
+              {NAV.map((item) => (
                 <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}
                   className="px-4 py-3 rounded-2xl hover:bg-secondary transition-colors font-medium">
-                  {t(item.key)}
+                  {item.label}
                 </a>
               ))}
-              <div className="mt-2 flex justify-center"><LangSwitcher /></div>
               <a href="#contact" onClick={() => setMenuOpen(false)}
                 className="mt-2 px-4 py-3 rounded-2xl bg-primary text-primary-foreground text-center font-semibold">
-                {t("nav.hire")}
+                Hire Me
               </a>
             </motion.nav>
           )}
@@ -508,23 +494,22 @@ function Navbar({ menuOpen, setMenuOpen }: { menuOpen: boolean; setMenuOpen: (v:
 }
 
 function ContactForm() {
-  const { t } = useI18n();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sending, setSending] = useState(false);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) {
-      toast.error(t("form.err.fill"));
+      toast.error("Mohon lengkapi semua kolom.");
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      toast.error(t("form.err.email"));
+      toast.error("Format email tidak valid.");
       return;
     }
     setSending(true);
     await new Promise((r) => setTimeout(r, 900));
-    toast.success(t("form.ok"));
+    toast.success("Pesan terkirim! Saya akan segera membalas.");
     setForm({ name: "", email: "", message: "" });
     setSending(false);
   };
@@ -538,33 +523,33 @@ function ContactForm() {
     >
       <div className="grid md:grid-cols-2 gap-5">
         <div>
-          <label className="text-sm font-medium mb-2 block">{t("form.name")}</label>
+          <label className="text-sm font-medium mb-2 block">Nama</label>
           <input
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             className="w-full px-4 py-3 rounded-2xl bg-white/70 border border-border focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-            placeholder={t("form.name.ph")}
+            placeholder="Nama kamu"
           />
         </div>
         <div>
-          <label className="text-sm font-medium mb-2 block">{t("form.email")}</label>
+          <label className="text-sm font-medium mb-2 block">Email</label>
           <input
             type="email"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             className="w-full px-4 py-3 rounded-2xl bg-white/70 border border-border focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-            placeholder={t("form.email.ph")}
+            placeholder="kamu@email.com"
           />
         </div>
       </div>
       <div>
-        <label className="text-sm font-medium mb-2 block">{t("form.message")}</label>
+        <label className="text-sm font-medium mb-2 block">Pesan</label>
         <textarea
           rows={5}
           value={form.message}
           onChange={(e) => setForm({ ...form, message: e.target.value })}
           className="w-full px-4 py-3 rounded-2xl bg-white/70 border border-border focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
-          placeholder={t("form.message.ph")}
+          placeholder="Ceritakan tentang proyekmu..."
         />
       </div>
       <button
@@ -572,7 +557,7 @@ function ContactForm() {
         disabled={sending}
         className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold shadow-soft hover:shadow-pink transition-all hover:-translate-y-0.5 disabled:opacity-60"
       >
-        {sending ? t("form.sending") : t("form.send")}
+        {sending ? "Mengirim..." : "Kirim Pesan"}
         <Send className="w-4 h-4 transition-transform group-hover:translate-x-1" />
       </button>
     </motion.form>
@@ -580,14 +565,13 @@ function ContactForm() {
 }
 
 function Footer() {
-  const { t } = useI18n();
   return (
     <footer className="px-6 py-10 border-t border-border/50">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
-          {t("footer.made")} <Heart className="w-4 h-4 text-[oklch(0.72_0.14_10)]" fill="currentColor" /> {t("footer.and")}
+          Dibuat dengan <Heart className="w-4 h-4 text-[oklch(0.72_0.14_10)]" fill="currentColor" /> & matcha latte
         </div>
-        <div>© {new Date().getFullYear()} Zahida Asha Falia. {t("footer.rights")}</div>
+        <div>© {new Date().getFullYear()} Ayu Pratama. All rights reserved.</div>
       </div>
     </footer>
   );
