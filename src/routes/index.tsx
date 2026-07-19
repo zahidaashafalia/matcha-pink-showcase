@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import {
   Github, Linkedin, Mail, Twitter, ArrowRight, Sparkles,
   Code2, Palette, Rocket, ExternalLink, Menu, X, Send,
-  MapPin, Calendar, Coffee, Heart, Star
+  MapPin, Calendar, Coffee, Heart, Star, Download
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
 
