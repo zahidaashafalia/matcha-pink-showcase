@@ -8,6 +8,7 @@ import {
   Figma, Smartphone, Layers, Star, MapPin, Download,
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
+import ashaPhoto from "@/assets/asha.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
@@ -307,7 +308,8 @@ function Hero() {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base lg:mx-0">
-              Siswi Pengembangan Perangkat Lunak dan Gim di SMK Negeri 1 Bangsri yang menyukai{" "}
+              Panggil saja <strong className="text-foreground">Asha</strong> — siswi Pengembangan Perangkat Lunak dan Gim di
+              SMK Negeri 1 Bangsri yang menyukai{" "}
               <strong className="text-foreground">UI/UX Design</strong>,{" "}
               <strong className="text-foreground">Website Design</strong>, dan{" "}
               <strong className="text-foreground">Software Analysis</strong>.
@@ -353,7 +355,17 @@ function Hero() {
             transition={{ type: "spring", stiffness: 120, damping: 14 }}
             className="preserve-3d glass relative rounded-[2rem] p-8 shadow-soft"
           >
-            <div className="animate-blob mx-auto h-40 w-40 bg-hero shadow-pink" />
+            <motion.div
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="mx-auto h-44 w-44 overflow-hidden rounded-full bg-hero p-1.5 shadow-pink"
+            >
+              <img
+                src={ashaPhoto.url}
+                alt="Foto profil Zahida Asha Falia"
+                className="h-full w-full rounded-full object-cover object-top"
+              />
+            </motion.div>
             <div className="mt-6 text-center">
               <p className="font-display text-2xl font-bold text-gradient">Zahida Asha Falia</p>
               <p className="mt-1 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">UI/UX · Web · Analyst</p>
@@ -395,21 +407,36 @@ function About() {
   return (
     <section id="about" className="relative px-4 py-24 sm:px-6">
       <div className="mx-auto max-w-6xl">
-        <SectionTitle eyebrow="Tentang Saya" title="Halo, saya Zahida 🌿" />
+        <SectionTitle eyebrow="Tentang Saya" title="Halo, saya Asha 🌿" />
         <Reveal>
-          <div className="glass mx-auto max-w-3xl rounded-[2rem] p-8 shadow-soft sm:p-10">
-            <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-              Halo! Saya <strong className="text-foreground">Zahida Asha Falia</strong>, siswi Pengembangan Perangkat Lunak dan Gim (PPLG)
-              di SMK Negeri 1 Bangsri. Saya memiliki ketertarikan pada UI/UX Design, Website Design, dan Software Analysis. Saya senang
-              merancang antarmuka yang modern, responsif, dan mudah digunakan. Meskipun mempelajari berbagai bidang teknologi, saya lebih
-              menikmati proses mendesain, menganalisis kebutuhan sistem, serta mengembangkan ide menjadi produk digital yang bermanfaat.
-              Untuk membantu proses pengembangan website, saya juga memanfaatkan{" "}
-              <strong className="text-foreground">AI-assisted coding (Vibe Coding)</strong> sebagai alat bantu implementasi.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-2">
-              {MINAT.map((m) => (
-                <Chip key={m}>{m}</Chip>
-              ))}
+          <div className="glass mx-auto grid max-w-4xl gap-8 rounded-[2rem] p-8 shadow-soft sm:p-10 md:grid-cols-[220px_1fr] md:items-center">
+            <motion.div
+              whileHover={{ rotate: -3, scale: 1.03 }}
+              transition={{ type: "spring", stiffness: 220, damping: 16 }}
+              className="mx-auto w-full max-w-[220px] overflow-hidden rounded-[1.75rem] bg-hero p-1.5 shadow-pink"
+            >
+              <img
+                src={ashaPhoto.url}
+                alt="Zahida Asha Falia, siswi PPLG SMK Negeri 1 Bangsri"
+                loading="lazy"
+                className="aspect-[4/5] w-full rounded-[1.5rem] object-cover object-top"
+              />
+            </motion.div>
+            <div>
+              <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+                Halo! Saya <strong className="text-foreground">Zahida Asha Falia</strong> (biasa dipanggil{" "}
+                <strong className="text-foreground">Asha</strong>), siswi Pengembangan Perangkat Lunak dan Gim (PPLG)
+                di SMK Negeri 1 Bangsri. Saya memiliki ketertarikan pada UI/UX Design, Website Design, dan Software Analysis. Saya senang
+                merancang antarmuka yang modern, responsif, dan mudah digunakan. Meskipun mempelajari berbagai bidang teknologi, saya lebih
+                menikmati proses mendesain, menganalisis kebutuhan sistem, serta mengembangkan ide menjadi produk digital yang bermanfaat.
+                Untuk membantu proses pengembangan website, saya juga memanfaatkan{" "}
+                <strong className="text-foreground">AI-assisted coding (Vibe Coding)</strong> sebagai alat bantu implementasi.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-2">
+                {MINAT.map((m) => (
+                  <Chip key={m}>{m}</Chip>
+                ))}
+              </div>
             </div>
           </div>
         </Reveal>
