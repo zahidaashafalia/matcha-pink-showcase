@@ -8,6 +8,7 @@ import {
   Figma, Smartphone, Layers, Star, MapPin, Download,
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
+import ashaPhoto from "@/assets/asha.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
