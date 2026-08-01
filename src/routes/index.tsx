@@ -1,578 +1,752 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import {
-  Github, Linkedin, Mail, Twitter, ArrowRight, Sparkles,
-  Code2, Palette, Rocket, ExternalLink, Menu, X, Send,
-  MapPin, Calendar, Coffee, Heart, Star, Download
+  Github, Linkedin, Instagram, MessageCircle, Mail, ArrowRight, Sparkles,
+  Code2, Palette, Rocket, Menu, X, Send, GraduationCap, Cpu, Database,
+  FileSearch, Briefcase, Award, Users, Heart, Music, BookOpen, Sun,
+  Figma, Smartphone, Layers, Star, MapPin, Download,
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
+  head: () => ({
+    meta: [
+      { title: "Zahida Asha Falia — UI/UX & Web Portfolio" },
+      {
+        name: "description",
+        content:
+          "Portofolio Zahida Asha Falia, siswi PPLG SMK Negeri 1 Bangsri — UI/UX Design, Website Design, dan Software Analysis.",
+      },
+      { property: "og:title", content: "Zahida Asha Falia — UI/UX & Web Portfolio" },
+      {
+        property: "og:description",
+        content:
+          "Portofolio siswi PPLG SMKN 1 Bangsri: UI/UX Design, Web Development, IoT, dan Software Analysis.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
 });
 
 const NAV = [
   { label: "Beranda", href: "#home" },
   { label: "Tentang", href: "#about" },
-  { label: "Skill", href: "#skills" },
+  { label: "Pendidikan", href: "#education" },
+  { label: "Keahlian", href: "#skills" },
   { label: "Proyek", href: "#projects" },
+  { label: "Pengalaman", href: "#experience" },
   { label: "Kontak", href: "#contact" },
 ];
 
-const SKILLS = [
-  { name: "React & Next.js", level: 95, icon: Code2 },
-  { name: "TypeScript", level: 90, icon: Code2 },
-  { name: "UI / UX Design", level: 88, icon: Palette },
-  { name: "Node.js & API", level: 85, icon: Rocket },
-  { name: "Framer Motion", level: 92, icon: Sparkles },
-  { name: "Tailwind CSS", level: 96, icon: Palette },
+const MATERI = [
+  {
+    title: "UI/UX Design",
+    icon: Palette,
+    items: ["Wireframe", "Mockup", "Prototype", "Design System", "Responsive Design", "User Experience (UX)"],
+  },
+  {
+    title: "Web Development",
+    icon: Code2,
+    items: ["HTML", "CSS", "JavaScript", "PHP", "Laravel"],
+  },
+  {
+    title: "Mobile App Development",
+    icon: Smartphone,
+    items: ["Flutter", "Android Studio", "Java"],
+  },
+  {
+    title: "Internet of Things (IoT)",
+    icon: Cpu,
+    items: ["Arduino IDE", "Arduino Uno", "Blynk IoT", "Ubidots", "Robot Car", "Smart Lighting", "Smart Lock", "Gas Detection System"],
+  },
+  {
+    title: "Database",
+    icon: Database,
+    items: ["MySQL", "Entity Relationship Diagram (ERD)"],
+  },
+  {
+    title: "Software Analysis",
+    icon: FileSearch,
+    items: ["Flowchart", "Analisis Kebutuhan Sistem", "User Story", "Product Backlog", "Agile", "Scrum"],
+  },
+  {
+    title: "Produk Kreatif & Kewirausahaan",
+    icon: Rocket,
+    items: ["Dasar-dasar kewirausahaan", "Analisis peluang usaha", "Perhitungan modal", "Harga pokok produksi", "Margin keuntungan", "Perencanaan usaha"],
+  },
+];
+
+const KEAHLIAN = [
+  { title: "UI/UX Design", icon: Palette, items: ["UI Design", "UX Design", "Wireframing", "Prototyping", "Responsive Design"] },
+  { title: "Website", icon: Layers, items: ["Website Design", "Laravel (Basic)", "HTML", "CSS", "PHP"] },
+  { title: "Software Analysis", icon: FileSearch, items: ["Flowchart", "User Story", "Product Backlog", "Requirement Analysis"] },
+  { title: "Tools", icon: Figma, items: ["Figma", "Canva", "Visual Studio Code", "Git & GitHub", "Android Studio", "Arduino IDE", "Blynk IoT", "Ubidots"] },
 ];
 
 const PROJECTS = [
   {
-    title: "Matcha Commerce",
-    desc: "Platform e-commerce khusus produk matcha premium dengan pengalaman belanja imersif.",
-    tags: ["Next.js", "Stripe", "Tailwind"],
-    color: "from-[oklch(0.78_0.11_140)] to-[oklch(0.9_0.05_15)]",
+    title: "Website Jadwal Pelajaran Dinamis",
+    period: "Kelas X → Kenaikan Kelas XI",
+    type: "Individu",
+    role: "Web Developer",
+    desc:
+      "Membangun website jadwal pelajaran sebagai proyek kenaikan kelas pertama. Proyek ini dipresentasikan di hadapan guru penguji sebagai bentuk evaluasi kompetensi dasar pengembangan website.",
+    contributions: [] as string[],
+    tech: ["HTML"],
   },
   {
-    title: "Bloom Dashboard",
-    desc: "Dashboard analitik SaaS dengan visualisasi data real-time dan tema pastel.",
-    tags: ["React", "D3.js", "Supabase"],
-    color: "from-[oklch(0.9_0.05_15)] to-[oklch(0.78_0.11_140)]",
+    title: "Website Texcer Hot",
+    period: "Kelas XI → Kenaikan Kelas XII",
+    type: "Kelompok (4 Orang)",
+    role: "Web Developer",
+    desc: "Proyek kelompok pengembangan website dengan PHP beserta perancangan antarmuka bersama tim.",
+    contributions: [
+      "Mengembangkan website menggunakan PHP.",
+      "Membantu proses pembuatan desain antarmuka bersama anggota tim agar proyek selesai sesuai target.",
+    ],
+    tech: ["PHP"],
   },
   {
-    title: "Pixel Portfolio",
-    desc: "Portfolio 3D interaktif untuk seorang illustrator dengan animasi scroll yang halus.",
-    tags: ["Three.js", "GSAP", "Vite"],
-    color: "from-[oklch(0.72_0.14_10)] to-[oklch(0.58_0.13_145)]",
-  },
-  {
-    title: "Zen Journal",
-    desc: "Aplikasi journaling mindfulness dengan mood tracker dan reminder harian.",
-    tags: ["React Native", "Expo", "Firebase"],
-    color: "from-[oklch(0.58_0.13_145)] to-[oklch(0.72_0.14_10)]",
+    title: "Website Gateway SMK Negeri 1 Bangsri",
+    period: "Kelas XII (Sedang Berjalan)",
+    type: "Kelompok (3 Orang)",
+    role: "System Analyst",
+    desc:
+      "Website ini dirancang sebagai pusat akses berbagai website dan layanan digital sekolah, serta akan digunakan langsung oleh warga sekolah.",
+    contributions: [
+      "Analisis kebutuhan sistem",
+      "User Story",
+      "Product Backlog",
+      "Dokumentasi Scrum",
+      "Flowchart",
+      "Analisis alur website",
+    ],
+    tech: ["Laravel"],
   },
 ];
 
-const STATS = [
-  { value: "50+", label: "Proyek Selesai" },
-  { value: "5+", label: "Tahun Pengalaman" },
-  { value: "30+", label: "Klien Bahagia" },
-  { value: "∞", label: "Cangkir Kopi" },
+const ORGANISASI = [
+  {
+    title: "Web Development",
+    period: "Kelas XI – Sekarang",
+    desc: "Aktif mengikuti ekstrakurikuler Web Development untuk mengembangkan kemampuan di bidang pengembangan website dan teknologi web.",
+    icon: Code2,
+  },
+  {
+    title: "Palang Merah Remaja (PMR)",
+    period: "Kelas X",
+    desc: "Mengikuti kegiatan PMR hingga masa pelantikan sebagai pengalaman awal dalam kegiatan organisasi sekolah.",
+    icon: Users,
+  },
 ];
 
-function Portfolio() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+const MINAT = ["UI/UX Design", "Website Design", "Software Analysis", "Digital Product Design", "AI-assisted Coding"];
 
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+const HOBI = [
+  { label: "Mendesain antarmuka website", icon: Palette },
+  { label: "Mendengarkan musik", icon: Music },
+  { label: "Membaca novel", icon: BookOpen },
+  { label: "Berolahraga ringan di pagi hari", icon: Sun },
+];
 
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      setMouse({
-        x: (e.clientX / window.innerWidth - 0.5) * 2,
-        y: (e.clientY / window.innerHeight - 0.5) * 2,
-      });
-    };
-    window.addEventListener("mousemove", handler);
-    return () => window.removeEventListener("mousemove", handler);
-  }, []);
+const SOCIALS = [
+  { label: "GitHub", href: "https://github.com/zahidaashafalia", icon: Github, handle: "@zahidaashafalia" },
+  { label: "Instagram", href: "https://www.instagram.com/ashafally/tagged/", icon: Instagram, handle: "@ashafally" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/", icon: Linkedin, handle: "Zahida Asha Falia" },
+  { label: "WhatsApp", href: "https://wa.me/6285647076201", icon: MessageCircle, handle: "+62 856-4707-6201" },
+];
 
+/* ---------------- shared bits ---------------- */
+
+function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
-      <Toaster position="top-center" richColors />
+    <motion.div
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
-      {/* Ambient gradient blobs */}
-      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
-        <motion.div
-          className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full opacity-40 blur-3xl"
-          style={{ background: "var(--gradient-blob)" }}
-          animate={{ x: [0, 100, 0], y: [0, 60, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute top-1/2 -right-40 w-[600px] h-[600px] rounded-full opacity-30 blur-3xl"
-          style={{ background: "linear-gradient(135deg, var(--pink-milk), var(--matcha))" }}
-          animate={{ x: [0, -80, 0], y: [0, -100, 0] }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </div>
+function SectionTitle({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle?: string }) {
+  return (
+    <Reveal className="mx-auto mb-14 max-w-2xl text-center">
+      <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary backdrop-blur">
+        <Sparkles className="h-3.5 w-3.5" /> {eyebrow}
+      </span>
+      <h2 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
+        <span className="text-gradient">{title}</span>
+      </h2>
+      {subtitle && <p className="mt-4 text-sm leading-relaxed text-muted-foreground sm:text-base">{subtitle}</p>}
+    </Reveal>
+  );
+}
 
-      <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+function Chip({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.span
+      whileHover={{ y: -3, scale: 1.04 }}
+      transition={{ type: "spring", stiffness: 400, damping: 18 }}
+      className="inline-flex cursor-default items-center rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground shadow-sm"
+    >
+      {children}
+    </motion.span>
+  );
+}
 
-      {/* HERO */}
-      <section id="home" ref={heroRef} className="relative min-h-screen flex items-center pt-24 pb-16 px-6">
-        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center w-full">
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass shadow-soft mb-6"
-            >
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium">Tersedia untuk proyek baru</span>
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
-              className="text-5xl md:text-7xl font-bold leading-[1.05] mb-6"
-            >
-              Halo, saya <br />
-              <span className="text-gradient">Creative Dev</span> <br />
-              yang suka <em className="font-normal italic">matcha</em>.
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-lg text-muted-foreground max-w-lg mb-8"
-            >
-              Saya merancang & membangun pengalaman digital yang cantik, cepat, dan bermakna —
-              memadukan estetika lembut dengan kode yang rapi.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
-              className="flex flex-wrap gap-4"
-            >
-              <a href="#projects" className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold shadow-soft hover:shadow-pink transition-all hover:-translate-y-0.5">
-                Lihat Karya <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </a>
-              <a href="#contact" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full glass font-semibold hover:bg-secondary transition-all hover:-translate-y-0.5">
-                Hubungi Saya
-              </a>
-              <a
-                href="/resume.pdf"
-                download="Ayu-Pratama-Resume.pdf"
-                onClick={() => toast.success("CV sedang diunduh…")}
-                className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/70 border border-[oklch(0.72_0.14_10)]/40 text-[oklch(0.4_0.12_10)] font-semibold shadow-pink hover:bg-[oklch(0.9_0.05_15)] transition-all hover:-translate-y-0.5"
-              >
-                <Download className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
-                Unduh CV
-              </a>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
-              className="flex items-center gap-6 mt-10 text-muted-foreground"
-            >
-              {[Github, Linkedin, Twitter, Mail].map((Icon, i) => (
-                <motion.a key={i} href="#" whileHover={{ y: -3, color: "var(--matcha-deep)" }} className="transition-colors">
-                  <Icon className="w-5 h-5" />
-                </motion.a>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* 3D Hero visual */}
-          <div className="perspective-1000 flex items-center justify-center h-[500px]">
-            <motion.div
-              className="relative preserve-3d"
-              style={mounted ? {
-                rotateY: mouse.x * 15,
-                rotateX: -mouse.y * 15,
-              } : undefined}
-              transition={{ type: "spring", stiffness: 50, damping: 20 }}
-            >
-              {/* Layered 3D cards */}
-              <motion.div
-                className="absolute -inset-8 rounded-[3rem] bg-gradient-to-br from-[oklch(0.78_0.11_140)] to-[oklch(0.9_0.05_15)] opacity-70 blur-2xl animate-blob"
-                style={{ transform: "translateZ(-100px)" }}
-              />
-              <motion.div
-                className="w-72 h-96 md:w-80 md:h-[440px] rounded-[2.5rem] bg-gradient-to-br from-[oklch(0.9_0.05_15)] via-white to-[oklch(0.78_0.11_140)] shadow-pink relative overflow-hidden animate-float-3d"
-                style={{ transform: "translateZ(50px)" }}
-              >
-                <div className="absolute inset-0 opacity-40" style={{ background: "radial-gradient(circle at 30% 20%, white 0%, transparent 50%)" }} />
-                <div className="absolute inset-6 rounded-3xl glass flex flex-col items-center justify-center gap-4 p-6">
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                    className="w-24 h-24 rounded-full bg-gradient-to-br from-[oklch(0.58_0.13_145)] to-[oklch(0.72_0.14_10)] flex items-center justify-center shadow-soft"
-                  >
-                    <Coffee className="w-10 h-10 text-white" />
-                  </motion.div>
-                  <div className="text-center">
-                    <div className="font-display text-2xl font-bold text-gradient">Matcha + Pink</div>
-                    <div className="text-xs text-muted-foreground mt-1">Design & Code Studio</div>
-                  </div>
-                  <div className="grid grid-cols-3 gap-2 w-full mt-2">
-                    {[Code2, Palette, Rocket].map((Icon, i) => (
-                      <div key={i} className="aspect-square rounded-xl bg-white/70 flex items-center justify-center">
-                        <Icon className="w-5 h-5 text-primary" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Floating orbs */}
-              <motion.div
-                className="absolute -top-8 -right-8 w-20 h-20 rounded-2xl bg-gradient-to-br from-[oklch(0.72_0.14_10)] to-[oklch(0.9_0.05_15)] shadow-pink"
-                style={{ transform: "translateZ(120px)" }}
-                animate={{ y: [0, -15, 0], rotate: [0, 10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <motion.div
-                className="absolute -bottom-6 -left-10 w-16 h-16 rounded-full bg-gradient-to-br from-[oklch(0.58_0.13_145)] to-[oklch(0.78_0.11_140)] shadow-soft flex items-center justify-center"
-                style={{ transform: "translateZ(100px)" }}
-                animate={{ y: [0, 15, 0], rotate: [0, -15, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <Heart className="w-6 h-6 text-white" fill="white" />
-              </motion.div>
-              <motion.div
-                className="absolute top-1/2 -left-16 w-12 h-12 rounded-lg bg-white shadow-soft flex items-center justify-center"
-                style={{ transform: "translateZ(80px)" }}
-                animate={{ x: [0, -10, 0], rotate: [0, 20, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <Star className="w-5 h-5 text-[oklch(0.72_0.14_10)]" fill="currentColor" />
-              </motion.div>
-            </motion.div>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* STATS */}
-      <section className="px-6 py-16">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
-          {STATS.map((s, i) => (
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{ y: -6, rotateX: 5, rotateY: 5 }}
-              className="glass rounded-3xl p-6 text-center preserve-3d shadow-soft"
-            >
-              <div className="text-4xl md:text-5xl font-bold text-gradient font-display">{s.value}</div>
-              <div className="text-sm text-muted-foreground mt-2">{s.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ABOUT */}
-      <section id="about" className="px-6 py-24">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.7 }}
-            className="perspective-1000"
-          >
-            <div className="preserve-3d relative aspect-square max-w-md mx-auto">
-              <motion.div
-                className="absolute inset-0 rounded-[3rem] bg-gradient-to-br from-[oklch(0.78_0.11_140)] to-[oklch(0.9_0.05_15)] animate-blob shadow-soft"
-                animate={{ rotate: [0, 5, 0] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <div className="absolute inset-6 rounded-[2.5rem] glass flex items-center justify-center flex-col gap-3">
-                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[oklch(0.72_0.14_10)] to-[oklch(0.58_0.13_145)] flex items-center justify-center text-white text-5xl font-display font-bold shadow-pink">
-                  A
-                </div>
-                <div className="text-center">
-                  <div className="font-display text-2xl font-bold">Ayu Pratama</div>
-                  <div className="text-sm text-muted-foreground">Creative Developer</div>
-                </div>
-                <div className="flex items-center gap-4 text-xs text-muted-foreground mt-2">
-                  <span className="inline-flex items-center gap-1"><MapPin className="w-3 h-3" /> Jakarta</span>
-                  <span className="inline-flex items-center gap-1"><Calendar className="w-3 h-3" /> 2019 — kini</span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.7 }}
-          >
-            <div className="inline-flex px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold mb-4">TENTANG SAYA</div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Merancang produk yang <span className="text-gradient">terasa hangat</span> & bekerja mulus.
-            </h2>
-            <p className="text-muted-foreground text-lg mb-4">
-              Saya seorang creative developer dengan passion di persimpangan desain dan teknologi.
-              Selama 5+ tahun, saya membantu startup dan brand membangun produk digital yang tidak hanya
-              berfungsi baik — tapi juga meninggalkan kesan.
-            </p>
-            <p className="text-muted-foreground text-lg mb-8">
-              Ketika tidak coding, kamu bisa menemukan saya menyeruput matcha latte, membaca buku desain,
-              atau menjelajahi kafe-kafe baru di kota.
-            </p>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { icon: Coffee, label: "Passion", value: "Matcha & Kode" },
-                { icon: Palette, label: "Fokus", value: "Design Systems" },
-              ].map((item) => (
-                <div key={item.label} className="glass rounded-2xl p-4 shadow-soft">
-                  <item.icon className="w-6 h-6 text-primary mb-2" />
-                  <div className="text-xs text-muted-foreground">{item.label}</div>
-                  <div className="font-semibold">{item.value}</div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* SKILLS */}
-      <section id="skills" className="px-6 py-24">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} className="text-center mb-16"
-          >
-            <div className="inline-flex px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold mb-4">KEAHLIAN</div>
-            <h2 className="text-4xl md:text-5xl font-bold">Tools yang saya <span className="text-gradient">kuasai</span></h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-5">
-            {SKILLS.map((skill, i) => (
-              <motion.div
-                key={skill.name}
-                initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.05 }}
-                whileHover={{ scale: 1.02 }}
-                className="glass rounded-2xl p-6 shadow-soft"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[oklch(0.78_0.11_140)] to-[oklch(0.9_0.05_15)] flex items-center justify-center">
-                      <skill.icon className="w-5 h-5 text-primary" />
-                    </div>
-                    <span className="font-semibold">{skill.name}</span>
-                  </div>
-                  <span className="text-sm text-muted-foreground font-mono">{skill.level}%</span>
-                </div>
-                <div className="h-2 rounded-full bg-muted overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }} whileInView={{ width: `${skill.level}%` }}
-                    viewport={{ once: true }} transition={{ duration: 1.2, delay: i * 0.05, ease: "easeOut" }}
-                    className="h-full rounded-full bg-gradient-to-r from-[oklch(0.58_0.13_145)] to-[oklch(0.72_0.14_10)]"
-                  />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PROJECTS */}
-      <section id="projects" className="px-6 py-24">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} className="text-center mb-16"
-          >
-            <div className="inline-flex px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold mb-4">PROYEK</div>
-            <h2 className="text-4xl md:text-5xl font-bold">Karya <span className="text-gradient">terpilih</span></h2>
-            <p className="text-muted-foreground mt-4 max-w-xl mx-auto">Sebagian proyek yang saya kerjakan dari konsep sampai peluncuran.</p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-6 perspective-1000">
-            {PROJECTS.map((p, i) => (
-              <motion.article
-                key={p.title}
-                initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }}
-                whileHover={{ y: -8, rotateX: 4, rotateY: -4 }}
-                className="preserve-3d group relative rounded-3xl overflow-hidden glass shadow-soft cursor-pointer"
-              >
-                <div className={`h-56 bg-gradient-to-br ${p.color} relative overflow-hidden`}>
-                  <div className="absolute inset-0 opacity-30" style={{ background: "radial-gradient(circle at 70% 30%, white 0%, transparent 60%)" }} />
-                  <motion.div
-                    className="absolute bottom-4 right-4 w-20 h-20 rounded-2xl bg-white/40 backdrop-blur-md flex items-center justify-center"
-                    animate={{ rotate: [0, 10, 0] }}
-                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <ExternalLink className="w-8 h-8 text-white" />
-                  </motion.div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold mb-2 group-hover:text-gradient transition-all">{p.title}</h3>
-                  <p className="text-muted-foreground mb-4">{p.desc}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {p.tags.map((t) => (
-                      <span key={t} className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-medium">{t}</span>
-                    ))}
-                  </div>
-                </div>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contact" className="px-6 py-24">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} className="text-center mb-12"
-          >
-            <div className="inline-flex px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-semibold mb-4">KONTAK</div>
-            <h2 className="text-4xl md:text-5xl font-bold">Ayo <span className="text-gradient">bekerja sama</span></h2>
-            <p className="text-muted-foreground mt-4">Punya ide atau proyek? Ceritakan pada saya.</p>
-          </motion.div>
-
-          <ContactForm />
-        </div>
-      </section>
-
-      <Footer />
+function Blobs() {
+  return (
+    <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+      <div className="animate-blob animate-float-3d absolute -left-24 top-[-6rem] h-80 w-80 opacity-50 blur-3xl" style={{ background: "var(--gradient-blob)" }} />
+      <div className="animate-blob absolute right-[-8rem] top-1/3 h-96 w-96 opacity-40 blur-3xl" style={{ background: "var(--gradient-hero)", animationDelay: "2s" }} />
+      <div className="animate-blob animate-float-3d absolute bottom-[-8rem] left-1/3 h-[26rem] w-[26rem] opacity-35 blur-3xl" style={{ background: "var(--gradient-blob)", animationDelay: "4s" }} />
     </div>
   );
 }
 
-function Navbar({ menuOpen, setMenuOpen }: { menuOpen: boolean; setMenuOpen: (v: boolean) => void }) {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 20);
-    on();
-    window.addEventListener("scroll", on);
-    return () => window.removeEventListener("scroll", on);
-  }, []);
+/* ---------------- sections ---------------- */
 
+function Navbar() {
+  const [open, setOpen] = useState(false);
   return (
-    <motion.header
-      initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all ${scrolled ? "py-3" : "py-5"}`}
-    >
-      <div className="max-w-7xl mx-auto px-6">
-        <div className={`flex items-center justify-between rounded-full px-5 py-3 transition-all ${scrolled ? "glass shadow-soft" : ""}`}>
-          <a href="#home" className="flex items-center gap-2 font-display font-bold text-lg">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[oklch(0.58_0.13_145)] to-[oklch(0.72_0.14_10)] flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-gradient">Ayu.</span>
-          </a>
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5">
+      <nav className="glass mx-auto flex max-w-6xl items-center justify-between rounded-full px-4 py-2.5 shadow-soft sm:px-6">
+        <a href="#home" className="flex items-center gap-2 font-display text-base font-bold sm:text-lg">
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-hero text-sm font-bold text-primary-foreground shadow-pink">Z</span>
+          <span className="text-gradient">Zahida</span>
+        </a>
 
-          <nav className="hidden md:flex items-center gap-1">
-            {NAV.map((item) => (
-              <a key={item.href} href={item.href} className="px-4 py-2 rounded-full text-sm font-medium hover:bg-secondary transition-colors">
-                {item.label}
+        <ul className="hidden items-center gap-1 lg:flex">
+          {NAV.map((n) => (
+            <li key={n.href}>
+              <a href={n.href} className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground">
+                {n.label}
               </a>
-            ))}
-          </nav>
+            </li>
+          ))}
+        </ul>
 
-          <a href="#contact" className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:shadow-pink transition-all">
-            Hire Me
+        <div className="flex items-center gap-2">
+          <a
+            href="https://wa.me/6285647076201"
+            target="_blank"
+            rel="noreferrer"
+            className="hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-105 sm:inline-flex"
+          >
+            Hubungi Saya
           </a>
-
-          <button className="md:hidden p-2" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
-            {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          <button
+            aria-label="Buka menu"
+            onClick={() => setOpen((v) => !v)}
+            className="grid h-9 w-9 place-items-center rounded-full border border-border bg-card lg:hidden"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
         </div>
+      </nav>
 
-        <AnimatePresence>
-          {menuOpen && (
-            <motion.nav
-              initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-              className="md:hidden mt-3 p-4 glass rounded-3xl shadow-soft flex flex-col gap-1"
-            >
-              {NAV.map((item) => (
-                <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}
-                  className="px-4 py-3 rounded-2xl hover:bg-secondary transition-colors font-medium">
-                  {item.label}
+      <AnimatePresence>
+        {open && (
+          <motion.ul
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            className="glass mx-auto mt-2 max-w-6xl overflow-hidden rounded-3xl p-2 shadow-soft lg:hidden"
+          >
+            {NAV.map((n) => (
+              <li key={n.href}>
+                <a
+                  href={n.href}
+                  onClick={() => setOpen(false)}
+                  className="block rounded-2xl px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary/60"
+                >
+                  {n.label}
                 </a>
-              ))}
-              <a href="#contact" onClick={() => setMenuOpen(false)}
-                className="mt-2 px-4 py-3 rounded-2xl bg-primary text-primary-foreground text-center font-semibold">
-                Hire Me
-              </a>
-            </motion.nav>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.header>
+              </li>
+            ))}
+          </motion.ul>
+        )}
+      </AnimatePresence>
+    </header>
   );
 }
 
-function ContactForm() {
+function Hero() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 500], [0, 90]);
+
+  function onMove(e: React.MouseEvent) {
+    const r = ref.current?.getBoundingClientRect();
+    if (!r) return;
+    setTilt({ x: ((e.clientY - r.top) / r.height - 0.5) * -16, y: ((e.clientX - r.left) / r.width - 0.5) * 16 });
+  }
+
+  return (
+    <section id="home" className="relative flex min-h-screen items-center px-4 pt-28 sm:px-6">
+      <div className="mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+        <motion.div style={{ y }} className="text-center lg:text-left">
+          <Reveal>
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 text-xs font-semibold text-primary backdrop-blur">
+              <MapPin className="h-3.5 w-3.5" /> Jepara, Jawa Tengah · XII PPLG 2
+            </span>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h1 className="mt-6 font-display text-4xl font-bold leading-[1.05] sm:text-6xl lg:text-7xl">
+              Zahida <br />
+              <span className="text-gradient">Asha Falia</span>
+            </h1>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base lg:mx-0">
+              Siswi Pengembangan Perangkat Lunak dan Gim di SMK Negeri 1 Bangsri yang menyukai{" "}
+              <strong className="text-foreground">UI/UX Design</strong>,{" "}
+              <strong className="text-foreground">Website Design</strong>, dan{" "}
+              <strong className="text-foreground">Software Analysis</strong>.
+            </p>
+          </Reveal>
+          <Reveal delay={0.24}>
+            <div className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
+              <a href="#projects" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-105">
+                Lihat Proyek <ArrowRight className="h-4 w-4" />
+              </a>
+              <a
+                href="/resume.pdf"
+                download
+                onClick={() => toast.success("CV sedang diunduh 🌸")}
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-6 py-3 text-sm font-semibold text-secondary-foreground shadow-pink transition-transform hover:scale-105"
+              >
+                <Download className="h-4 w-4" /> Unduh CV
+              </a>
+            </div>
+          </Reveal>
+          <Reveal delay={0.32}>
+            <div className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
+              {SOCIALS.map((s) => (
+                <motion.a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={s.label}
+                  whileHover={{ y: -4, rotate: -6 }}
+                  className="grid h-11 w-11 place-items-center rounded-2xl border border-border bg-card text-primary shadow-sm"
+                >
+                  <s.icon className="h-5 w-5" />
+                </motion.a>
+              ))}
+            </div>
+          </Reveal>
+        </motion.div>
+
+        <div ref={ref} onMouseMove={onMove} onMouseLeave={() => setTilt({ x: 0, y: 0 })} className="perspective-1000 mx-auto w-full max-w-sm">
+          <motion.div
+            animate={{ rotateX: tilt.x, rotateY: tilt.y }}
+            transition={{ type: "spring", stiffness: 120, damping: 14 }}
+            className="preserve-3d glass relative rounded-[2rem] p-8 shadow-soft"
+          >
+            <div className="animate-blob mx-auto h-40 w-40 bg-hero shadow-pink" />
+            <div className="mt-6 text-center">
+              <p className="font-display text-2xl font-bold text-gradient">Zahida Asha Falia</p>
+              <p className="mt-1 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">UI/UX · Web · Analyst</p>
+            </div>
+            <div className="mt-6 grid grid-cols-3 gap-2 text-center">
+              {[
+                { v: "3+", l: "Proyek" },
+                { v: "XII", l: "PPLG 2" },
+                { v: "2", l: "Ekskul" },
+              ].map((s) => (
+                <div key={s.l} className="rounded-2xl bg-card/80 px-2 py-3">
+                  <p className="font-display text-lg font-bold text-primary">{s.v}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{s.l}</p>
+                </div>
+              ))}
+            </div>
+            <motion.div
+              animate={{ y: [0, -14, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -right-4 -top-4 grid h-14 w-14 place-items-center rounded-2xl bg-secondary shadow-pink"
+            >
+              <Heart className="h-6 w-6 text-[oklch(0.72_0.14_10)]" />
+            </motion.div>
+            <motion.div
+              animate={{ y: [0, 14, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -bottom-5 -left-5 grid h-14 w-14 place-items-center rounded-2xl bg-accent shadow-soft"
+            >
+              <Star className="h-6 w-6 text-primary-foreground" />
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function About() {
+  return (
+    <section id="about" className="relative px-4 py-24 sm:px-6">
+      <div className="mx-auto max-w-6xl">
+        <SectionTitle eyebrow="Tentang Saya" title="Halo, saya Zahida 🌿" />
+        <Reveal>
+          <div className="glass mx-auto max-w-3xl rounded-[2rem] p-8 shadow-soft sm:p-10">
+            <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+              Halo! Saya <strong className="text-foreground">Zahida Asha Falia</strong>, siswi Pengembangan Perangkat Lunak dan Gim (PPLG)
+              di SMK Negeri 1 Bangsri. Saya memiliki ketertarikan pada UI/UX Design, Website Design, dan Software Analysis. Saya senang
+              merancang antarmuka yang modern, responsif, dan mudah digunakan. Meskipun mempelajari berbagai bidang teknologi, saya lebih
+              menikmati proses mendesain, menganalisis kebutuhan sistem, serta mengembangkan ide menjadi produk digital yang bermanfaat.
+              Untuk membantu proses pengembangan website, saya juga memanfaatkan{" "}
+              <strong className="text-foreground">AI-assisted coding (Vibe Coding)</strong> sebagai alat bantu implementasi.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-2">
+              {MINAT.map((m) => (
+                <Chip key={m}>{m}</Chip>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function Education() {
+  return (
+    <section id="education" className="relative px-4 py-24 sm:px-6">
+      <div className="mx-auto max-w-6xl">
+        <SectionTitle
+          eyebrow="Pendidikan"
+          title="SMK Negeri 1 Bangsri"
+          subtitle="Jurusan Pengembangan Perangkat Lunak dan Gim (PPLG) — Kelas XII PPLG 2"
+        />
+        <Reveal>
+          <div className="glass mb-12 rounded-[2rem] p-8 shadow-soft">
+            <div className="flex items-start gap-4">
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-hero text-primary-foreground shadow-pink">
+                <GraduationCap className="h-6 w-6" />
+              </span>
+              <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+                Selama menempuh pendidikan di SMK Negeri 1 Bangsri, saya mempelajari berbagai bidang yang berkaitan dengan pengembangan
+                perangkat lunak, mulai dari desain antarmuka, pengembangan website, aplikasi mobile, Internet of Things (IoT), analisis
+                sistem, hingga dasar-dasar kewirausahaan.
+              </p>
+            </div>
+          </div>
+        </Reveal>
+
+        <h3 className="mb-6 text-center font-display text-2xl font-bold">📖 Materi yang Dipelajari</h3>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {MATERI.map((m, i) => (
+            <Reveal key={m.title} delay={i * 0.06}>
+              <motion.div
+                whileHover={{ y: -8, rotateX: 6, rotateY: -6 }}
+                transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                className="preserve-3d h-full rounded-[1.75rem] border border-border bg-card p-6 shadow-soft"
+              >
+                <span className="mb-4 grid h-11 w-11 place-items-center rounded-2xl bg-secondary text-secondary-foreground">
+                  <m.icon className="h-5 w-5" />
+                </span>
+                <h4 className="font-display text-lg font-bold">{m.title}</h4>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {m.items.map((it) => (
+                    <Chip key={it}>{it}</Chip>
+                  ))}
+                </div>
+              </motion.div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Skills() {
+  return (
+    <section id="skills" className="relative px-4 py-24 sm:px-6">
+      <div className="mx-auto max-w-6xl">
+        <SectionTitle eyebrow="Keahlian" title="💡 Skill & Tools" subtitle="Kemampuan yang saya kembangkan selama belajar di PPLG." />
+        <div className="grid gap-5 sm:grid-cols-2">
+          {KEAHLIAN.map((k, i) => (
+            <Reveal key={k.title} delay={i * 0.08}>
+              <motion.div whileHover={{ scale: 1.02 }} className="h-full rounded-[1.75rem] border border-border bg-card p-7 shadow-soft">
+                <div className="flex items-center gap-3">
+                  <span className="grid h-11 w-11 place-items-center rounded-2xl bg-hero text-primary-foreground shadow-pink">
+                    <k.icon className="h-5 w-5" />
+                  </span>
+                  <h4 className="font-display text-xl font-bold">{k.title}</h4>
+                </div>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {k.items.map((it) => (
+                    <Chip key={it}>{it}</Chip>
+                  ))}
+                </div>
+              </motion.div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Projects() {
+  return (
+    <section id="projects" className="relative px-4 py-24 sm:px-6">
+      <div className="mx-auto max-w-6xl">
+        <SectionTitle eyebrow="Proyek Akademik" title="🚀 Karya & Proyek" subtitle="Proyek sekolah yang pernah saya kerjakan secara individu maupun tim." />
+        <div className="space-y-6">
+          {PROJECTS.map((p, i) => (
+            <Reveal key={p.title} delay={i * 0.08}>
+              <motion.article
+                whileHover={{ y: -6 }}
+                className="glass grid gap-6 rounded-[2rem] p-7 shadow-soft md:grid-cols-[auto_1fr] sm:p-9"
+              >
+                <div className="flex md:flex-col md:items-center md:gap-3">
+                  <span className="grid h-14 w-14 place-items-center rounded-2xl bg-hero font-display text-xl font-bold text-primary-foreground shadow-pink">
+                    0{i + 1}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">{p.period}</p>
+                  <h4 className="mt-2 font-display text-2xl font-bold">{p.title}</h4>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <Chip>Jenis: {p.type}</Chip>
+                    <Chip>Peran: {p.role}</Chip>
+                  </div>
+                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
+                  {p.contributions.length > 0 && (
+                    <ul className="mt-4 space-y-2">
+                      {p.contributions.map((c) => (
+                        <li key={c} className="flex gap-2 text-sm text-muted-foreground">
+                          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                          {c}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {p.tech.map((t) => (
+                      <span key={t} className="rounded-full bg-secondary px-3 py-1.5 text-xs font-semibold text-secondary-foreground">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.article>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Experience() {
+  return (
+    <section id="experience" className="relative px-4 py-24 sm:px-6">
+      <div className="mx-auto max-w-6xl">
+        <SectionTitle eyebrow="Pengalaman & Organisasi" title="🏅 Perjalanan Saya" />
+        <div className="grid gap-6 lg:grid-cols-2">
+          <Reveal>
+            <div className="glass h-full rounded-[2rem] p-8 shadow-soft">
+              <span className="mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-hero text-primary-foreground shadow-pink">
+                <Award className="h-6 w-6" />
+              </span>
+              <h4 className="font-display text-xl font-bold">Seleksi Program Pembelajaran Dicoding Indonesia</h4>
+              <p className="mt-3 text-sm text-muted-foreground">Mengikuti proses seleksi yang meliputi:</p>
+              <ul className="mt-3 space-y-2">
+                {["Wawancara", "Tes pengetahuan sesuai kompetensi PPLG", "Penyelesaian soal teknis"].map((c) => (
+                  <li key={c} className="flex gap-2 text-sm text-muted-foreground">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                    {c}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                Meskipun belum lolos ke tahap berikutnya, pengalaman ini memberikan wawasan mengenai proses seleksi di dunia industri dan
+                memotivasi saya untuk terus meningkatkan kemampuan.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="space-y-6">
+            {ORGANISASI.map((o, i) => (
+              <Reveal key={o.title} delay={0.08 * (i + 1)}>
+                <motion.div whileHover={{ x: 6 }} className="rounded-[2rem] border border-border bg-card p-8 shadow-soft">
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-11 w-11 place-items-center rounded-2xl bg-secondary text-secondary-foreground">
+                      <o.icon className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <h4 className="font-display text-lg font-bold">{o.title}</h4>
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">{o.period}</p>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{o.desc}</p>
+                </motion.div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+          <Reveal>
+            <div className="rounded-[2rem] border border-border bg-card p-8 shadow-soft">
+              <h4 className="font-display text-xl font-bold">❤️ Minat</h4>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {MINAT.map((m) => (
+                  <Chip key={m}>{m}</Chip>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <div className="rounded-[2rem] border border-border bg-card p-8 shadow-soft">
+              <h4 className="font-display text-xl font-bold">🎧 Hobi</h4>
+              <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+                {HOBI.map((h) => (
+                  <li key={h.label} className="flex items-center gap-3 rounded-2xl bg-muted/60 px-4 py-3 text-sm text-foreground">
+                    <h.icon className="h-4 w-4 shrink-0 text-primary" /> {h.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sending, setSending] = useState(false);
 
-  const submit = async (e: React.FormEvent) => {
+  function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.name || !form.email || !form.message) {
-      toast.error("Mohon lengkapi semua kolom.");
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+      toast.error("Mohon lengkapi semua kolom terlebih dahulu.");
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      toast.error("Format email tidak valid.");
+      toast.error("Format email belum benar.");
       return;
     }
     setSending(true);
-    await new Promise((r) => setTimeout(r, 900));
-    toast.success("Pesan terkirim! Saya akan segera membalas.");
-    setForm({ name: "", email: "", message: "" });
-    setSending(false);
-  };
+    setTimeout(() => {
+      setSending(false);
+      setForm({ name: "", email: "", message: "" });
+      toast.success("Terima kasih! Pesan kamu sudah terkirim 🌸");
+    }, 900);
+  }
+
+  const input =
+    "w-full rounded-2xl border border-border bg-card px-4 py-3 text-sm text-foreground outline-none transition-shadow placeholder:text-muted-foreground focus:ring-2 focus:ring-ring";
 
   return (
-    <motion.form
-      onSubmit={submit}
-      initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="glass rounded-3xl p-8 shadow-soft space-y-5"
-    >
-      <div className="grid md:grid-cols-2 gap-5">
-        <div>
-          <label className="text-sm font-medium mb-2 block">Nama</label>
-          <input
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full px-4 py-3 rounded-2xl bg-white/70 border border-border focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-            placeholder="Nama kamu"
-          />
-        </div>
-        <div>
-          <label className="text-sm font-medium mb-2 block">Email</label>
-          <input
-            type="email"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full px-4 py-3 rounded-2xl bg-white/70 border border-border focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-            placeholder="kamu@email.com"
-          />
+    <section id="contact" className="relative px-4 py-24 sm:px-6">
+      <div className="mx-auto max-w-6xl">
+        <SectionTitle eyebrow="Kontak" title="Mari Terhubung ✨" subtitle="Punya proyek, kolaborasi, atau sekadar ingin menyapa? Silakan hubungi saya." />
+        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <Reveal>
+            <div className="glass h-full rounded-[2rem] p-8 shadow-soft">
+              <h4 className="font-display text-xl font-bold">Sosial Media</h4>
+              <ul className="mt-5 space-y-3">
+                {SOCIALS.map((s) => (
+                  <li key={s.label}>
+                    <motion.a
+                      whileHover={{ x: 6 }}
+                      href={s.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-4 rounded-2xl border border-border bg-card px-4 py-3 shadow-sm"
+                    >
+                      <span className="grid h-10 w-10 place-items-center rounded-xl bg-secondary text-secondary-foreground">
+                        <s.icon className="h-5 w-5" />
+                      </span>
+                      <span>
+                        <span className="block text-sm font-semibold">{s.label}</span>
+                        <span className="block text-xs text-muted-foreground">{s.handle}</span>
+                      </span>
+                    </motion.a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <form onSubmit={submit} className="glass rounded-[2rem] p-8 shadow-pink">
+              <h4 className="font-display text-xl font-bold">Kirim Pesan</h4>
+              <div className="mt-5 space-y-4">
+                <input className={input} placeholder="Nama kamu" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                <input className={input} type="email" placeholder="Email kamu" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                <textarea rows={5} className={input} placeholder="Tulis pesan..." value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-[1.02] disabled:opacity-70"
+                >
+                  {sending ? "Mengirim..." : (<>Kirim Pesan <Send className="h-4 w-4" /></>)}
+                </button>
+              </div>
+            </form>
+          </Reveal>
         </div>
       </div>
-      <div>
-        <label className="text-sm font-medium mb-2 block">Pesan</label>
-        <textarea
-          rows={5}
-          value={form.message}
-          onChange={(e) => setForm({ ...form, message: e.target.value })}
-          className="w-full px-4 py-3 rounded-2xl bg-white/70 border border-border focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
-          placeholder="Ceritakan tentang proyekmu..."
-        />
-      </div>
-      <button
-        type="submit"
-        disabled={sending}
-        className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold shadow-soft hover:shadow-pink transition-all hover:-translate-y-0.5 disabled:opacity-60"
-      >
-        {sending ? "Mengirim..." : "Kirim Pesan"}
-        <Send className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-      </button>
-    </motion.form>
+    </section>
   );
 }
 
 function Footer() {
   return (
-    <footer className="px-6 py-10 border-t border-border/50">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-        <div className="flex items-center gap-2">
-          Dibuat dengan <Heart className="w-4 h-4 text-[oklch(0.72_0.14_10)]" fill="currentColor" /> & matcha latte
+    <footer className="relative px-4 pb-10 pt-6 sm:px-6">
+      <div className="glass mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 rounded-[2rem] px-8 py-6 text-center shadow-soft sm:flex-row sm:text-left">
+        <p className="text-sm text-muted-foreground">
+          © {new Date().getFullYear()} <span className="font-semibold text-foreground">Zahida Asha Falia</span> · XII PPLG 2 · SMKN 1 Bangsri
+        </p>
+        <div className="flex gap-2">
+          {SOCIALS.map((s) => (
+            <a key={s.label} href={s.href} target="_blank" rel="noreferrer" aria-label={s.label} className="grid h-9 w-9 place-items-center rounded-xl border border-border bg-card text-primary">
+              <s.icon className="h-4 w-4" />
+            </a>
+          ))}
+          <a href="mailto:" aria-label="Email" className="grid h-9 w-9 place-items-center rounded-xl border border-border bg-card text-primary">
+            <Mail className="h-4 w-4" />
+          </a>
         </div>
-        <div>© {new Date().getFullYear()} Ayu Pratama. All rights reserved.</div>
       </div>
     </footer>
+  );
+}
+
+function Portfolio() {
+  const { scrollYProgress } = useScroll();
+  return (
+    <div className="relative min-h-screen overflow-x-hidden">
+      <motion.div style={{ scaleX: scrollYProgress }} className="fixed inset-x-0 top-0 z-[60] h-1 origin-left bg-hero" />
+      <Blobs />
+      <Toaster position="top-center" richColors />
+      <Navbar />
+      <main>
+        <Hero />
+        <About />
+        <Education />
+        <Skills />
+        <Projects />
+        <Experience />
+        <Contact />
+      </main>
+      <Footer />
+    </div>
   );
 }
