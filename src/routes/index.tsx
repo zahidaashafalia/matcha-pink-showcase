@@ -440,8 +440,6 @@ function About() {
             </div>
           </div>
         </Reveal>
-          </div>
-        </Reveal>
       </div>
     </section>
   );
