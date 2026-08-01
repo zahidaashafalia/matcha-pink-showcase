@@ -354,7 +354,17 @@ function Hero() {
             transition={{ type: "spring", stiffness: 120, damping: 14 }}
             className="preserve-3d glass relative rounded-[2rem] p-8 shadow-soft"
           >
-            <div className="animate-blob mx-auto h-40 w-40 bg-hero shadow-pink" />
+            <motion.div
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="mx-auto h-44 w-44 overflow-hidden rounded-full bg-hero p-1.5 shadow-pink"
+            >
+              <img
+                src={ashaPhoto.url}
+                alt="Foto profil Zahida Asha Falia"
+                className="h-full w-full rounded-full object-cover object-top"
+              />
+            </motion.div>
             <div className="mt-6 text-center">
               <p className="font-display text-2xl font-bold text-gradient">Zahida Asha Falia</p>
               <p className="mt-1 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">UI/UX · Web · Analyst</p>
