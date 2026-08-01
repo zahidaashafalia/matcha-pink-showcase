@@ -308,7 +308,8 @@ function Hero() {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base lg:mx-0">
-              Siswi Pengembangan Perangkat Lunak dan Gim di SMK Negeri 1 Bangsri yang menyukai{" "}
+              Panggil saja <strong className="text-foreground">Asha</strong> — siswi Pengembangan Perangkat Lunak dan Gim di
+              SMK Negeri 1 Bangsri yang menyukai{" "}
               <strong className="text-foreground">UI/UX Design</strong>,{" "}
               <strong className="text-foreground">Website Design</strong>, dan{" "}
               <strong className="text-foreground">Software Analysis</strong>.
