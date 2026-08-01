@@ -408,10 +408,25 @@ function About() {
     <section id="about" className="relative px-4 py-24 sm:px-6">
       <div className="mx-auto max-w-6xl">
         <SectionTitle eyebrow="Tentang Saya" title="Halo, saya Zahida 🌿" />
+        <SectionTitle eyebrow="Tentang Saya" title="Halo, saya Asha 🌿" />
         <Reveal>
-          <div className="glass mx-auto max-w-3xl rounded-[2rem] p-8 shadow-soft sm:p-10">
+          <div className="glass mx-auto grid max-w-4xl gap-8 rounded-[2rem] p-8 shadow-soft sm:p-10 md:grid-cols-[220px_1fr] md:items-center">
+            <motion.div
+              whileHover={{ rotate: -3, scale: 1.03 }}
+              transition={{ type: "spring", stiffness: 220, damping: 16 }}
+              className="mx-auto w-full max-w-[220px] overflow-hidden rounded-[1.75rem] bg-hero p-1.5 shadow-pink"
+            >
+              <img
+                src={ashaPhoto.url}
+                alt="Zahida Asha Falia, siswi PPLG SMK Negeri 1 Bangsri"
+                loading="lazy"
+                className="aspect-[4/5] w-full rounded-[1.5rem] object-cover object-top"
+              />
+            </motion.div>
+            <div>
             <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-              Halo! Saya <strong className="text-foreground">Zahida Asha Falia</strong>, siswi Pengembangan Perangkat Lunak dan Gim (PPLG)
+              Halo! Saya <strong className="text-foreground">Zahida Asha Falia</strong> (biasa dipanggil{" "}
+              <strong className="text-foreground">Asha</strong>), siswi Pengembangan Perangkat Lunak dan Gim (PPLG)
               di SMK Negeri 1 Bangsri. Saya memiliki ketertarikan pada UI/UX Design, Website Design, dan Software Analysis. Saya senang
               merancang antarmuka yang modern, responsif, dan mudah digunakan. Meskipun mempelajari berbagai bidang teknologi, saya lebih
               menikmati proses mendesain, menganalisis kebutuhan sistem, serta mengembangkan ide menjadi produk digital yang bermanfaat.
@@ -419,6 +434,12 @@ function About() {
               <strong className="text-foreground">AI-assisted coding (Vibe Coding)</strong> sebagai alat bantu implementasi.
             </p>
             <div className="mt-8 flex flex-wrap gap-2">
+              {MINAT.map((m) => (
+                <Chip key={m}>{m}</Chip>
+              ))}
+            </div>
+            </div>
+
               {MINAT.map((m) => (
                 <Chip key={m}>{m}</Chip>
               ))}
